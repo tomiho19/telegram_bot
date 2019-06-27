@@ -21,7 +21,7 @@ class Bot:
         response = requests.get(self.api_url + method, params)
         result_json = response.json()['result']
         return result_json
-
+    
     def get_last_update(self):
         get_result = self.get_updates()
         if len(get_result) > 0:
@@ -31,15 +31,12 @@ class Bot:
         return last_update
 
     def get_chat_id(self, last_update):
-         return last_update['message']['chat']['id']
+        return last_update['message']['chat']['id']
     
     def send_message(self, chat_id, text):
-        print('send_message')
-        print(chat_id, text)
         params = {'chat_id': chat_id, 'text': text}
         method = 'sendMessage'
         response = requests.post(self.api_url + method, params)
-        print("Message {} has been sent to chat with id {}".format(text, chat_id))
         return response
 
 greet_bot = Bot(DEFAULT_TOKEN)
@@ -58,10 +55,7 @@ def main():
         last_chat_text = last_update['message']['text']
         last_chat_id = last_update['message']['chat']['id']
         last_chat_name = last_update['message']['chat']['first_name']
-        print(last_chat_text.lower() in greetings)
-        print(today == now.day and 6 <= hour <= 12) 
-        print(today == now.day and 17 <= hour <= 23)
-        print(today == now.day and 12 <= hour <= 17)
+        
         if last_chat_text.lower() in greetings and today == now.day and 6 <= hour <= 12:
             greet_bot.send_message(last_chat_id, 'Доброе утро животное %s, просыпайся пожалуйста смертный' % last_chat_name)
             today += 1
